@@ -3,12 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Shalley's Threads </title>
+  <title>Shalley's Threads</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<video autoplay loop muted playsinline style="position:fixed;right:0;bottom:0;min-width:100%;min-height:100%;z-index:-1;object-fit:cover;"><source src="cover-vid.mp4" type="video/mp4"></video>
-
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <style>
     :root{--accent:#9333ea;--muted:#6b7280;--bg:#f7f7f9;--card:#ffffff;--radius:12px}
@@ -30,15 +28,21 @@
     .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
     .title{font-weight:600}
     .price{color:var(--accent);font-weight:700}
-    .actions{display:flex;gap:8px;margin-top:10px}
-    .btn{background:var(--accent);color:white;padding:9px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
+    .button-group{display:flex;gap:10px;justify-content:center;margin-top:10px}
+    .btn,.view-btn{background-color:var(--accent);color:#fff;padding:8px 14px;border:none;border-radius:6px;cursor:pointer;transition:all 0.25s ease}
     .btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(17,24,39,0.06)}
+    .btn:hover{transform:translateY(-2px)}
+    .view-btn{background:#444}
+    .texture-options{margin-top:12px;background:#f8f8f8;border-radius:8px;padding:10px;text-align:left;overflow:hidden;transition:max-height 0.28s ease}
+    .texture-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .texture-item button{background-color:#222;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:0.9em}
+    .texture-item button:hover{background-color:#444}
+    .hidden{display:none}
 
-    
+    /* cart */
     .cart-wrap{position:relative}
     .cart-btn{background:var(--accent);color:white;border-radius:999px;padding:8px 12px;border:none;cursor:pointer;font-weight:700}
     .cart-count{background:#ef4444;color:white;border-radius:999px;padding:2px 8px;font-size:12px;margin-left:8px}
-
     #cart-dropdown{position:absolute;right:0;top:46px;width:360px;background:var(--card);border-radius:12px;padding:12px;box-shadow:0 12px 40px rgba(15,23,42,0.08);display:none;z-index:80}
     .cart-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #f1f1f1}
     .cart-row img{width:64px;height:64px;object-fit:cover;border-radius:8px}
@@ -48,7 +52,7 @@
 
     .cart-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
 
- 
+    /* modal */
     .modal-overlay{position:fixed;inset:0;background:rgba(10,12,15,0.45);display:none;align-items:flex-end;justify-content:center;padding:20px;z-index:120}
     .modal{background:var(--card);border-radius:16px 16px 0 0;padding:18px;width:100%;max-width:700px;box-shadow:0 20px 60px rgba(15,23,42,0.12)}
     .modal h3{margin:0 0 8px}
@@ -57,65 +61,21 @@
     .full{grid-column:1/ -1}
     .modal-actions{display:flex;gap:8px;margin-top:12px}
 
-    
     footer{text-align:center;margin-top:40px;padding:20px;color:var(--muted);font-size:14px}
-
-    /* Contact sidebar */
-    .contact-sidebar{
-      position:fixed;
-      right:0;
-      top:50%;
-      transform:translateY(-50%);
-      background:var(--card);
-      padding:16px 12px;
-      border-radius:12px 0 0 12px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.1);
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      z-index:50;
-      font-size:14px;
-    }
-
-    .contact-sidebar a{color:var(--accent);text-decoration:none;}
-    .contact-sidebar div{font-weight:500;}
-
-    
-    /* Cart preview */
-    #cart-preview{
-      position:fixed;
-      right:20px;
-      top:60px;
-      background:white;
-      border:1px solid #ddd;
-      border-radius:12px;
-      padding:16px;
-      width:250px;
-      max-height:400px;
-      overflow-y:auto;
-      box-shadow:0 6px 18px rgba(0,0,0,0.1);
-      display:none;
-      z-index:70;
-    }
-
-    #cart-preview button{width:100%;margin-top:10px}
-
-
-    .thanks{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,#fff,#fff);padding:12px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,0.08);display:none}
+    .thanks{position:fixed;right:18px;bottom:18px;background:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,0.08);display:none}
 
     @media (max-width:720px){.hero{flex-direction:column}.hero img{width:100%}.modal-overlay{align-items:flex-end}}
   </style>
 </head>
 <body>
+
   <header>
     <div class="brand">Shalley's Threads</div>
     <div style="display:flex;align-items:center;gap:12px">
       <div class="cart-wrap">
         <button class="cart-btn" id="cart-toggle">🛒 Cart <span class="cart-count" id="cart-count">0</span></button>
         <div id="cart-dropdown" aria-hidden="true">
-          <div id="cart-contents">
-          
-          </div>
+          <div id="cart-contents"></div>
           <div class="cart-footer">
             <div>
               <div style="font-weight:700">Subtotal</div>
@@ -135,8 +95,8 @@
     <section class="hero">
       <div class="hero-text">
         <h1>Custom & Plain T-Shirts</h1>
-        <p>A neutral, modern storefront for your brand. Add items to the cart and preview them below the cart icon.</p>
-        <div style="margin-top:12px"><button class="btn" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Now</button></div>
+        <p>A neutral, modern storefront for your brand. Use View to choose textures, then add & checkout.</p>
+        <div style="margin-top:12px"><button class="btn" onclick="document.getElementById('product-grid').scrollIntoView({behavior:'smooth'})">Shop Now</button></div>
       </div>
       <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=60" alt="teeshirt"/>
     </section>
@@ -148,14 +108,15 @@
   </main>
 
   <!-- Contact Sidebar -->
-  <div class="contact-sidebar">
-    <div>Contact Us</div>
-    <div><ion-icon name="logo-whatsapp"></ion-icon>  +233-534-452-5461</div>
+  <div style="position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:50">
+    <div style="background:#fff;padding:12px;border-radius:8px 0 0 8px;box-shadow:0 6px 18px rgba(0,0,0,0.08);font-size:14px">
+      <div style="font-weight:600;margin-bottom:6px">Contact</div>
+       <div><ion-icon name="logo-whatsapp"></ion-icon>  +233-534-452-5461</div>
     <div><ion-icon name="logo-snapchat"></ion-icon>@ekshalley</div>
+    </div>
   </div>
 
-
- 
+  <!-- Delivery & Payment Modal -->
   <div class="modal-overlay" id="modal-overlay">
     <div class="modal" role="dialog" aria-modal="true">
       <h3>Delivery & Payment</h3>
@@ -168,196 +129,356 @@
           <textarea id="cust-address" class="full" rows="3" placeholder="Full delivery address" required></textarea>
           <textarea id="cust-note" class="full" rows="2" placeholder="Additional note (optional)"></textarea>
         </div>
+
         <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:8px">
           <div style="font-weight:700">Total: <span id="modal-total">₵0.00</span></div>
           <div class="modal-actions">
             <button type="button" id="paystack-pay" class="btn">Pay Now</button>
             <button type="submit" class="btn ghost">Confirm & Email Order</button>
+            <button type="button" id="whatsapp-send" class="btn" style="background:#25D366">WhatsApp</button>
           </div>
         </div>
       </form>
     </div>
   </div>
 
-        <footer>
-      © 2025 Shalley's Threads — Powered by Paystack
-      </footer>
-
   <div class="thanks" id="thanks">Medase! (Thank you) — order received.</div>
 
- 
+  <!-- Payment & Email libraries -->
   <script src="https://js.paystack.co/v1/inline.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
   <script>
-   
-    const EMAILJS_SERVICE_ID = 'service_z14iwt4';
-    const EMAILJS_TEMPLATE_ID = 'template_6he1gec';
-    const EMAILJS_PUBLIC_KEY = 'tJxkwRw8Sozbk0mNc';
-    const PAYSTACK_PUBLIC_KEY = 'pk_test_ee9830f2f2e30f60d3273ceb744d651a21ddbff3';
+  // ---------------------------
+  // CONFIG - replace if/when ready for live
+  // ---------------------------
+  const EMAILJS_SERVICE_ID = 'service_z14iwt4';
+  const EMAILJS_TEMPLATE_ID = 'template_6he1gec';
+  const EMAILJS_PUBLIC_KEY = 'tJxkwRw8Sozbk0mNc'; 
+  const PAYSTACK_PUBLIC_KEY = 'pk_live_8c302b10a1df5424ee3fbf0adff36c10fff889f5'; 
+  const WHATSAPP_NUMBER = '+2335344525461'; // your WhatsApp (for wa.me link)
 
-   
-    if(window.emailjs){ emailjs.init(EMAILJS_PUBLIC_KEY); }
+  // init emailjs
+  if(window.emailjs && typeof emailjs.init === 'function'){
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }
 
-  
-    const products = [
-      {id:1,title:'Plain White Tee',price:60,img:'md-salman-tWOz2_EK5EQ-unsplash.jpg'},
-      {id:2,title:' Design Tee',price:120,img:'alexander-london-KL8EGoKDNcQ-unsplash.jpg'},
-      {id:3,title:' Custom Branding',price:170,img:'skiddle.jpg'},
-      {id:4,title:'Graphic Print Tee',price:150,img:'deniz-demirci-JCuuLy5VJCw-unsplash.jpg'},
+  // ---------------------------
+  // PRODUCTS (textures only show on View click)
+  // ---------------------------
+  const products = [
+    {
+      id: 1,
+      title: 'Plain Tee',
+      img: 'md-salman-tWOz2_EK5EQ-unsplash.jpg',
+      textures: [
+        { name: 'Light(230 GSM)', price: 70 },
+        { name: 'Heavy (320 GSM)', price: 120 }
+      ]
+    },
+    {
+      id: 2,
+      title: 'Design Tee',
+      img: 'alexander-london-KL8EGoKDNcQ-unsplash.jpg',
+      textures: [
+        { name: '230 GSM', price: 100 },
+        { name: '320 GSM', price: 150 }
+      ]
+    },
+    {
+      id: 3,
+      title: 'Custom Branding',
+      img: 'skiddle.jpg',
+      textures: [{ name: 'Standard', price: 170 }]
+    },
+    {
+      id: 4,
+      title: 'Graphic Print Tee',
+      img: 'deniz-demirci-JCuuLy5VJCw-unsplash.jpg',
+      textures: [{ name: 'Standard', price: 150 }]
+    }
+  ];
+
+  // ---------------------------
+  // STATE & DOM refs
+  // ---------------------------
+  let cart = []; // items: {id,texture,price,qty,title,img}
+  const productGrid = document.getElementById('product-grid');
+  const cartToggle = document.getElementById('cart-toggle');
+  const cartCountEl = document.getElementById('cart-count');
+  const cartDropdown = document.getElementById('cart-dropdown');
+  const cartContents = document.getElementById('cart-contents');
+  const subtotalEl = document.getElementById('subtotal');
+  const clearCartBtn = document.getElementById('clear-cart');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const modalOverlay = document.getElementById('modal-overlay');
+  const modalTotal = document.getElementById('modal-total');
+  const paystackPayBtn = document.getElementById('paystack-pay');
+  const thanksEl = document.getElementById('thanks');
+  const deliveryForm = document.getElementById('delivery-form');
+  const whatsappBtn = document.getElementById('whatsapp-send');
+
+  // ---------------------------
+  // Helpers
+  // ---------------------------
+  function currency(n){ return '₵' + Number(n).toFixed(2); }
+  function findCartItem(id, texture){ return cart.find(i=>i.id===id && i.texture===texture); }
+
+  // ---------------------------
+  // Render products
+  // ---------------------------
+  function renderProducts(){
+    productGrid.innerHTML = products.map(p=>{
+      // display "From ₵X" if textures
+      const minPrice = Math.min(...p.textures.map(t=>t.price));
+      const priceDisplay = `From ${currency(minPrice)}`;
+      return `
+        <div class="card">
+          <img src="${p.img}" alt="${p.title}">
+          <div class='meta'>
+            <div class='title'>${p.title}</div>
+            <div class='price'>${priceDisplay}</div>
+          </div>
+          <div class="button-group">
+            <button class="view-btn" data-id="${p.id}">View</button>
+          </div>
+          <div class="texture-options hidden" id="textures-${p.id}"></div>
+        </div>
+      `;
+    }).join('');
+
+    // attach view handlers
+    document.querySelectorAll('.view-btn').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const id = Number(e.currentTarget.dataset.id);
+        toggleTextures(id);
+      });
+    });
+  }
+
+  // ---------------------------
+  // Toggle textures (only on View click)
+  // ---------------------------
+  function toggleTextures(id){
+    const p = products.find(x=>x.id===id);
+    if(!p) return;
+    const div = document.getElementById(`textures-${id}`);
+    if(!div) return;
+
+    if(div.classList.contains('hidden')){
+      // populate
+      div.innerHTML = p.textures.map(t => `
+        <div class="texture-item">
+          <div><strong>${t.name}</strong> — ${currency(t.price)}</div>
+          <div>
+            <button class="add-texture" data-id="${id}" data-texture="${t.name}" data-price="${t.price}">Add</button>
+          </div>
+        </div>
+      `).join('');
+      div.classList.remove('hidden');
+      div.style.maxHeight = div.scrollHeight + "px";
+
+      // attach add handlers for textures
+      div.querySelectorAll('.add-texture').forEach(b=>{
+        b.addEventListener('click', (ev)=>{
+          const id = Number(ev.currentTarget.dataset.id);
+          const texture = ev.currentTarget.dataset.texture;
+          const price = Number(ev.currentTarget.dataset.price);
+          addToCart(id, texture, price);
+          // open modal automatically to proceed
+          modalOverlay.style.display = 'flex';
+        });
+      });
+    } else {
+      // hide
+      div.style.maxHeight = "0";
+      setTimeout(()=>{ div.classList.add('hidden'); div.innerHTML=''; }, 280);
+    }
+  }
+
+  // ---------------------------
+  // Cart operations
+  // ---------------------------
+  function addToCart(id, texture, price){
+    const p = products.find(x=>x.id===id);
+    if(!p) return;
+    const existing = findCartItem(id, texture);
+    if(existing) existing.qty++;
+    else cart.push({id, texture, price, qty:1, title: p.title, img: p.img});
+    updateCartUI();
+  }
+
+  function changeQty(id, texture, delta){
+    const it = findCartItem(id, texture);
+    if(!it) return;
+    it.qty = Math.max(1, it.qty + delta);
+    updateCartUI();
+  }
+
+  function removeFromCart(id, texture){
+    cart = cart.filter(i => !(i.id===id && i.texture===texture));
+    updateCartUI();
+  }
+
+  function updateCartUI(){
+    const totalItems = cart.reduce((s,i)=>s+i.qty,0);
+    const totalPrice = cart.reduce((s,i)=>s + i.price * i.qty,0);
+    cartCountEl.textContent = totalItems;
+    subtotalEl.textContent = currency(totalPrice);
+    modalTotal.textContent = currency(totalPrice);
+
+    // render cart contents
+    cartContents.innerHTML = '';
+    if(cart.length === 0){
+      cartContents.innerHTML = '<div style="color:var(--muted);padding:12px">Your cart is empty</div>';
+      return;
+    }
+
+    cart.forEach(item=>{
+      const row = document.createElement('div');
+      row.className = 'cart-row';
+      row.innerHTML = `
+        <img src="${item.img}" alt="${item.title}"/>
+        <div class='cart-info'>
+          <div style='font-weight:600'>${item.title} (${item.texture})</div>
+          <div style='color:var(--muted);font-size:13px'>${currency(item.price)} x ${item.qty} = ${currency(item.price*item.qty)}</div>
+        </div>
+        <div class='cart-controls'>
+          <button class='dec' data-id='${item.id}' data-texture='${item.texture}'>-</button>
+          <button class='inc' data-id='${item.id}' data-texture='${item.texture}'>+</button>
+          <button class='rem' data-id='${item.id}' data-texture='${item.texture}'>Remove</button>
+        </div>
+      `;
+      cartContents.appendChild(row);
+    });
+  }
+
+  // ---------------------------
+  // Event wiring
+  // ---------------------------
+  productGrid && renderProducts();
+  updateCartUI();
+
+  // productGrid-level event delegation for any dynamically-added elements
+  cartContents && cartContents.addEventListener('click', (e)=>{
+    const id = Number(e.target.dataset.id);
+    const texture = e.target.dataset.texture;
+    if(e.target.matches('.inc')) changeQty(id, texture, 1);
+    if(e.target.matches('.dec')) changeQty(id, texture, -1);
+    if(e.target.matches('.rem')) removeFromCart(id, texture);
+  });
+
+  cartToggle && cartToggle.addEventListener('click', ()=>{ cartDropdown.style.display = cartDropdown.style.display === 'block' ? 'none' : 'block'; });
+  clearCartBtn && clearCartBtn.addEventListener('click', ()=>{ cart = []; updateCartUI(); });
+
+  checkoutBtn && checkoutBtn.addEventListener('click', ()=>{ if(cart.length>0) modalOverlay.style.display='flex'; else alert('Cart is empty'); });
+  modalOverlay && modalOverlay.addEventListener('click', e=>{ if(e.target===modalOverlay) modalOverlay.style.display='none'; });
+
+  // ---------------------------
+  // EMAIL (EmailJS)
+  // ---------------------------
+  deliveryForm && deliveryForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(cart.length === 0){ alert('Cart is empty'); return; }
+
+    const name = document.getElementById('cust-name').value.trim();
+    const phone = document.getElementById('cust-phone').value.trim();
+    const email = document.getElementById('cust-email').value.trim();
+    const city = document.getElementById('cust-city').value.trim();
+    const address = document.getElementById('cust-address').value.trim();
+    const note = document.getElementById('cust-note').value.trim();
+
+    const orderDetails = cart.map(i=>`${i.title} (${i.texture}) x${i.qty} - ${currency(i.price*i.qty)}`).join('\n');
+    const total = cart.reduce((s,i)=>s + i.price*i.qty,0).toFixed(2);
+
+    const templateParams = {
+      to_email: 'oseiasantewaa318@gmail.com',
+      customer_name: name,
+      customer_phone: phone,
+      customer_email: email,
+      customer_city: city,
+      delivery_address: address,
+      note: note,
+      order_details: orderDetails,
+      order_total: `₵${total}`
+    };
+
+    if(!window.emailjs || typeof emailjs.send !== 'function'){
+      alert('Email service not ready. Please ensure EmailJS script and keys are configured.');
+      return;
+    }
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      .then(()=> {
+        modalOverlay.style.display='none';
+        thanksEl.style.display='block';
+        setTimeout(()=>thanksEl.style.display='none',3500);
+        cart = []; updateCartUI(); deliveryForm.reset();
+      })
+      .catch(err => {
+        console.error('emailjs error', err);
+        alert('Failed to send order by email — see console for details.');
+      });
+  });
+
+  // ---------------------------
+  // PAYSTACK
+  // ---------------------------
+  paystackPayBtn && paystackPayBtn.addEventListener('click', ()=>{
+    if(cart.length === 0){ alert('Cart is empty'); return; }
+
+    const totalGhs = cart.reduce((s,i)=>s + i.price*i.qty,0);
+    const amountInPesewas = Math.round(totalGhs * 100);
+
+    const buyerEmail = document.getElementById('cust-email').value || 'customer@example.com';
+
+    if(typeof PaystackPop === 'undefined'){
+      alert('Paystack script not loaded.');
+      return;
+    }
+
+    const handler = PaystackPop.setup({
+      key: PAYSTACK_PUBLIC_KEY,
+      email: buyerEmail,
+      amount: amountInPesewas,
+      currency: 'GHS',
+      ref: 'ST' + Math.floor((Math.random()*1000000000)+1),
+      onClose: function(){ alert('Payment closed'); },
+      callback: function(response){
+        // successful payment: show modal to confirm delivery details & email
+        alert('Payment successful. Ref: ' + response.reference);
+        modalOverlay.style.display = 'flex';
+      }
+    });
+    handler.openIframe();
+  });
+
+  // ---------------------------
+  // WHATSAPP SEND (Option C)
+  // ---------------------------
+  whatsappBtn && whatsappBtn.addEventListener('click', ()=>{
+    if(cart.length === 0){ alert('Cart is empty'); return; }
+
+    const name = document.getElementById('cust-name').value.trim() || '[name]';
+    const phone = document.getElementById('cust-phone').value.trim() || '[phone]';
+    const address = document.getElementById('cust-address').value.trim() || '[address]';
+    const total = cart.reduce((s,i)=>s + i.price*i.qty,0).toFixed(2);
+
+    const lines = [
+      `Hello, I want to place an order for Shalley's Threads:`,
+      ...cart.map(i => `- ${i.title} (${i.texture}) x${i.qty} - ${currency(i.price*i.qty)}`),
+      `Total: ${currency(total)}`,
+      `Name: ${name}`,
+      `Phone: ${phone}`,
+      `Address: ${address}`
     ];
 
-    // state
-    let cart = []; // {id,title,price,qty,img}
-
-    // DOM refs
-    const productGrid = document.getElementById('product-grid');
-    const cartToggle = document.getElementById('cart-toggle');
-    const cartCountEl = document.getElementById('cart-count');
-    const cartDropdown = document.getElementById('cart-dropdown');
-    const cartContents = document.getElementById('cart-contents');
-    const subtotalEl = document.getElementById('subtotal');
-    const clearCartBtn = document.getElementById('clear-cart');
-    const checkoutBtn = document.getElementById('checkout-btn');
-
-    const modalOverlay = document.getElementById('modal-overlay');
-    const deliveryForm = document.getElementById('delivery-form');
-    const modalTotal = document.getElementById('modal-total');
-    const paystackPayBtn = document.getElementById('paystack-pay');
-    const thanksEl = document.getElementById('thanks');
-
-    // render products
-    function renderProducts(){
-      productGrid.innerHTML = '';
-      products.forEach(p=>{
-        const card = document.createElement('div'); card.className='card';
-        card.innerHTML = `\n          <img src="${p.img}" alt="${p.title}"/>\n          <div class='meta'><div class='title'>${p.title}</div><div class='price'>₵${p.price}</div></div>\n          <div class='actions'><button class='btn add' data-id='${p.id}'>Add to cart</button></div>`;
-        productGrid.appendChild(card);
-      });
-    }
-
-    function findCartItem(id){ return cart.find(i=>i.id===id); }
-
-    function addToCart(id){
-      const p = products.find(x=>x.id===id);
-      if(!p) return;
-      const existing = findCartItem(id);
-      if(existing) existing.qty++;
-      else cart.push({id:p.id,title:p.title,price:p.price,qty:1,img:p.img});
-      updateCartUI();
-    }
-
-    function removeFromCart(id){ cart = cart.filter(i=>i.id!==id); updateCartUI(); }
-    function changeQty(id,delta){ const it = findCartItem(id); if(!it) return; it.qty = Math.max(1,it.qty+delta); updateCartUI(); }
-
-    function updateCartUI(){
-      // update count & subtotal
-      const totalItems = cart.reduce((s,i)=>s+i.qty,0);
-      const totalPrice = cart.reduce((s,i)=>s + i.price * i.qty,0);
-      cartCountEl.textContent = totalItems;
-      subtotalEl.textContent = `₵${totalPrice.toFixed(2)}`;
-      modalTotal.textContent = `₵${totalPrice.toFixed(2)}`;
-
-      // render contents
-      cartContents.innerHTML = '';
-      if(cart.length === 0){ cartContents.innerHTML = '<div style="color:var(--muted);padding:12px">Your cart is empty</div>'; return; }
-
-      cart.forEach(item=>{
-        const row = document.createElement('div'); row.className = 'cart-row';
-        row.innerHTML = `\n          <img src="${item.img}" alt="${item.title}"/>\n          <div class='cart-info'>\n            <div style='font-weight:600'>${item.title}</div>\n            <div style='color:var(--muted);font-size:13px'>₵${item.price} x ${item.qty} = ₵${(item.price*item.qty).toFixed(2)}</div>\n          </div>\n          <div class='cart-controls'>\n            <button class='dec' data-id='${item.id}'>-</button>\n            <button class='inc' data-id='${item.id}'>+</button>\n            <button class='rem' data-id='${item.id}'>Remove</button>\n          </div>`;
-        cartContents.appendChild(row);
-      });
-    }
-
-    // initial render
-    renderProducts(); updateCartUI();
-
-    // event delegation for product grid
-    productGrid.addEventListener('click', e=>{
-      if(e.target.matches('.add')){ addToCart(Number(e.target.dataset.id)); cartDropdown.style.display='block'; }
-     
-    });
-
-    // cart dropdown toggle and outside close
-    cartToggle.addEventListener('click', ()=>{ cartDropdown.style.display = cartDropdown.style.display === 'block' ? 'none' : 'block'; });
-    document.addEventListener('click', e=>{ if(!document.querySelector('.cart-wrap').contains(e.target)) cartDropdown.style.display='none'; });
-
-    // cart controls (inc/dec/remove)
-    cartContents.addEventListener('click', e=>{
-      const id = Number(e.target.dataset.id);
-      if(e.target.matches('.inc')) changeQty(id,1);
-      if(e.target.matches('.dec')) changeQty(id,-1);
-      if(e.target.matches('.rem')) removeFromCart(id);
-    });
-
-    clearCartBtn.addEventListener('click', ()=>{ cart = []; updateCartUI(); });
-
-    // checkout -> open slide-up modal
-    checkoutBtn.addEventListener('click', ()=>{
-      if(cart.length === 0){ alert('Cart is empty'); return; }
-      modalOverlay.style.display = 'flex';
-      // prefill modal total already handled in updateCartUI
-    });
-
-    // modal: close when clicking overlay background (but not when clicking modal)
-    modalOverlay.addEventListener('click', e=>{ if(e.target === modalOverlay) modalOverlay.style.display='none'; });
-
-    // EmailJS submit
-    deliveryForm.addEventListener('submit', function(e){
-      e.preventDefault();
-      if(cart.length === 0){ alert('Cart is empty'); return; }
-      const name = document.getElementById('cust-name').value.trim();
-      const phone = document.getElementById('cust-phone').value.trim();
-      const email = document.getElementById('cust-email').value.trim();
-      const city = document.getElementById('cust-city').value.trim();
-      const address = document.getElementById('cust-address').value.trim();
-      const note = document.getElementById('cust-note').value.trim();
-
-      const orderDetails = cart.map(i=>`${i.title} (x${i.qty}) - ₵${(i.price*i.qty).toFixed(2)}`).join('\n');
-      const total = cart.reduce((s,i)=>s + i.price * i.qty,0).toFixed(2);
-
-      const templateParams = {
-        to_email: 'oseiasantewaa318@gmail.com',
-        customer_name: name,
-        customer_phone: phone,
-        customer_email: email,
-        customer_city: city,
-        delivery_address: address,
-        note: note,
-        order_details: orderDetails,
-        order_total: `₵${total}`
-      };
-
-      if(!window.emailjs){ alert('Email service not ready. Please add EmailJS script or keys.'); return; }
-      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-        .then(()=>{
-          modalOverlay.style.display='none';
-          thanksEl.style.display='block';
-          setTimeout(()=>thanksEl.style.display='none',3500);
-          cart = []; updateCartUI(); deliveryForm.reset();
-        })
-        .catch(err=>{ alert('Failed to send order: ' + JSON.stringify(err)); });
-    });
-
-    // Paystack payment of total amount
-    paystackPayBtn.addEventListener('click', ()=>{
-      if(cart.length === 0){ alert('Cart is empty'); return; }
-      const total = Math.round(cart.reduce((s,i)=>s + i.price * i.qty,0) * 100);
-      const email = document.getElementById('cust-email').value || 'customer@example.com';
-      const handler = PaystackPop.setup({
-        key: PAYSTACK_PUBLIC_KEY,
-        email: email,
-        amount: total,
-        currency: 'GHS',
-        ref: 'ST'+Math.floor((Math.random()*1000000000)+1),
-        onClose: function(){ alert('Payment closed'); },
-        callback: function(response){
-          // After payment success, show modal to collect delivery details if not filled
-          alert('Payment successful. Ref: ' + response.reference);
-          modalOverlay.style.display = 'flex';
-        }
-      });
-      handler.openIframe();
-    });
+    const text = encodeURIComponent(lines.join('\n'));
+    // open wa.me link (WhatsApp)
+    // using international number without + and no spaces
+    const num = WHATSAPP_NUMBER.replace(/\D/g,'');
+    window.open(`https://wa.me/${num}?text=${text}`, '_blank');
+  });
 
   </script>
 </body>
